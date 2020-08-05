@@ -3,10 +3,7 @@ package com.github.jteam.configuration.impl;
 import com.github.jteam.configuration.Configuration;
 import com.github.jteam.value.Type;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -16,8 +13,8 @@ import java.util.stream.Collectors;
 public class HashConfiguration implements Configuration {
     public static final Configuration SINGLE_CONFIGURATION = new HashConfiguration(false);
     private final boolean modify;//是否可以被修改
-    private static final String IGNORE_FIELD = "ignoreField";
     private final HashMap<String, Object> configMap = new HashMap<>();
+    private Set<String> ignoreSet = new TreeSet<>();
 
     {
         configMap.put(Type.BYTE.getType(), 0b00);
@@ -39,7 +36,6 @@ public class HashConfiguration implements Configuration {
         configMap.put(Type.LONG_ARRAY.getType(), new Long[0]);
         configMap.put(Type.DOUBLE_ARRAY.getType(), new Double[0]);
         configMap.put(Type.STRING_ARRAY.getType(), new String[0]);
-        configMap.put(IGNORE_FIELD, new HashSet<String>());
     }
 
     /**
@@ -94,7 +90,7 @@ public class HashConfiguration implements Configuration {
     @SuppressWarnings("unchecked")
     @Override
     public Set<String> getIgnoreFields() {
-        return (Set<String>) configMap.get(IGNORE_FIELD);
+        return ignoreSet;
     }
 
     /**
@@ -107,9 +103,8 @@ public class HashConfiguration implements Configuration {
     @Override
     public Configuration setIgnoreFields(String... fields) {
         modifiable();
-        Set<String> ignoreKeys = (Set<String>) configMap.get(IGNORE_FIELD);
-        ignoreKeys.addAll(Arrays.asList(fields));
-        configMap.put(IGNORE_FIELD, ignoreKeys.stream().map(String::toLowerCase).collect(Collectors.toSet()));
+        ignoreSet.addAll(Arrays.asList(fields));
+        ignoreSet = ignoreSet.stream().map(String::toLowerCase).collect(Collectors.toSet());
         return this;
     }
 }
