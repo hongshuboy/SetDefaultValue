@@ -44,9 +44,10 @@ public class Configuration {
      * @param type  使用Type枚举类设置，如Type.Integer
      * @param value 为Type设置的默认值
      */
-    public void setDefaultConfig(Type type, Object value) {
+    public Configuration setDefaultConfig(Type type, Object value) {
         modifiable();
         configMap.put(type.getType(), value);
+        return this;
     }
 
     /**
