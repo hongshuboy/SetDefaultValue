@@ -10,8 +10,12 @@ import java.util.Set;
  */
 public interface Configuration {
     Configuration setDefaultConfig(Type type, Object value);
+
     Object getDefaultValue(Type type);
+
     Object getDefaultValue(String type);
+
     Configuration setIgnoreFields(String... fields);
+
     Set<String> getIgnoreFields();
 }
