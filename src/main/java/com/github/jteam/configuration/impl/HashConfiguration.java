@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 public class HashConfiguration implements Configuration {
     public static final Configuration SINGLE_CONFIGURATION = new HashConfiguration(false);
     private final boolean modify;//是否可以被修改
-    private static final  String IGNORE_FIELD = "ignoreField";
+    private static final String IGNORE_FIELD = "ignoreField";
     private final HashMap<String, Object> configMap = new HashMap<>();
 
     {
