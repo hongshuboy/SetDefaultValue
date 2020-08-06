@@ -14,13 +14,13 @@
 
 ```java
 public class Student {
-	private Integer id;
+    private Integer id;
     private Integer age;
     private String name;
     private Integer[] ids;
     private String schoolName;
     private int num;
- 	getters and setters ...   
+    getters and setters ...   
 }
 ```
 
@@ -73,7 +73,7 @@ Student{id=0, age=0, name='', ids=[], schoolName='', num=0}
 加入我们希望Integer类型的默认值为`1`而非`0`、`String`的默认值为`hi`、Integer数组的默认值为包含`1`和`2`的数组，我们可以如下设置
 
 ```java
-	/**
+    /**
      * 自定义默认值
      * 假如我们想对Integer类型设置的默认值是1，那么可以单独进行设置
      */
@@ -101,7 +101,7 @@ Student{id=1, age=1, name='hi', ids=[1, 2], schoolName='hi', num=0}
 还有一种可能，假如我们想对某些字段跳过，不让工具自动赋默认值，比如{XxxEntity}实体类，因为保存到数据库id自增的关系，我们希望id字段能保持为null，不要自动赋值，就可以使用`Configuration`的`setIgnoreFields`来处理
 
 ```java
-	/**
+    /**
      * 设置忽略字段
      * 1.设置INTEGER类型赋值为1（默认框架赋值为0）
      * 2.自动赋值时，忽略ids和schoolNamE两个字段（可写1至多个字段，自动会忽略大小写进行匹配）
