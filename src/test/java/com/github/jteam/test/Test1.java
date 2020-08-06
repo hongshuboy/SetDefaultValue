@@ -64,7 +64,7 @@ public class Test1 {
          *  这里虽然设置的是ids和schOOlNamE字段，但实际比较的是ids和schoolName（会自动忽略大小写）
          *  同时，类中的字段在匹配时，也会被忽略大小写，所以这里可以完全不管大小写，均可匹配到属性
          */
-        configuration.setIgnoreFields("ids", "schOOlNamE");
+        configuration.setIgnoreFields("id", "schOOlNamE");
 
         JHelper.setDefaultValue(student, configuration);
 

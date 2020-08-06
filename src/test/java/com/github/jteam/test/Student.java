@@ -4,15 +4,25 @@ import java.util.Arrays;
 
 /**
  * 测试类，注意num字段是基本类型，本身就有默认值，本工具不会对基本类型做任何操作
+ *
  * @author wp
  * 2020-08-03 14:25
  */
 public class Student {
+    private Integer id;
     private Integer age;
     private String name;
     private Integer[] ids;
     private String schoolName;
     private int num;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public Integer getAge() {
         return age;
@@ -57,18 +67,12 @@ public class Student {
     public Student() {
     }
 
-    public Student(Integer age, String name, Integer[] ids, String schoolName, int num) {
-        this.age = age;
-        this.name = name;
-        this.ids = ids;
-        this.schoolName = schoolName;
-        this.num = num;
-    }
 
     @Override
     public String toString() {
         return "Student{" +
-                "age=" + age +
+                "id=" + id +
+                ", age=" + age +
                 ", name='" + name + '\'' +
                 ", ids=" + Arrays.toString(ids) +
                 ", schoolName='" + schoolName + '\'' +
