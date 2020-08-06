@@ -134,6 +134,8 @@ Student{id=null, age=1, name='hi', ids=[1, 2], schoolName='null', num=0}
 
 如此，我们便可以方便的进行默认值的设置了
 
+以上所有的代码均在`test/java/`下，可直接运行测试
+
 再次提醒：**[本工具原理是通过反射调用Getter和Setter方法进行赋值，因此需要传入的对象有这类方法]**
 
 ### 作者
@@ -148,6 +150,6 @@ Email:hongshuboy@gmail.com
 
 本项目使用**Apache License 2.0**授权许可，详情请参阅 ***\LICENSE***
 
-*hongshuboy/SetDefaultValue is licensed under the Apache License 2.0,please read LICENSE and NOTICE for more information*
+*hongshuboy/SetDefaultValue is licensed under the Apache License 2.0,please read LICENSE for more information*
 
 Copyright ©2020 wangpeng(hongshu)
