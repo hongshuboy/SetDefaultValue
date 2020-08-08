@@ -17,6 +17,12 @@ public class HashConfiguration implements Configuration {
     private Set<String> ignoreSet = new TreeSet<>();
 
     {
+        initData();
+    }
+
+    //can be override
+    private void initData() {
+        configMap.clear();
         configMap.put(Type.BYTE.getType(), 0b00);
         configMap.put(Type.BOOLEAN.getType(), false);
         configMap.put(Type.CHARACTER.getType(), ' ');
@@ -26,7 +32,7 @@ public class HashConfiguration implements Configuration {
         configMap.put(Type.LONG.getType(), 0L);
         configMap.put(Type.DOUBLE.getType(), 0.0);
         configMap.put(Type.STRING.getType(), "");
-        //数组
+        //array
         configMap.put(Type.BYTE_ARRAY.getType(), new Byte[0]);
         configMap.put(Type.BOOLEAN_ARRAY.getType(), new Boolean[0]);
         configMap.put(Type.CHARACTER_ARRAY.getType(), new Character[0]);
@@ -36,6 +42,17 @@ public class HashConfiguration implements Configuration {
         configMap.put(Type.LONG_ARRAY.getType(), new Long[0]);
         configMap.put(Type.DOUBLE_ARRAY.getType(), new Double[0]);
         configMap.put(Type.STRING_ARRAY.getType(), new String[0]);
+        //collection
+        configMap.put(Type.LIST.getType(), new ArrayList<>());
+        configMap.put(Type.ARRAYLIST.getType(), new ArrayList<>());
+        configMap.put(Type.LINKED_LIST.getType(), new LinkedList<>());
+        configMap.put(Type.MAP.getType(), new TreeMap<>());
+        configMap.put(Type.HASH_MAP.getType(), new HashMap<>());
+        configMap.put(Type.TREE_MAP.getType(), new TreeMap<>());
+        configMap.put(Type.SET.getType(), new TreeSet<>());
+        configMap.put(Type.SORTED_SET.getType(), new TreeSet<>());
+        configMap.put(Type.TREE_SET.getType(), new TreeSet<>());
+        configMap.put(Type.HASH_SET.getType(), new HashSet<>());
     }
 
     /**
