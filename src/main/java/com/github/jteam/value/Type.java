@@ -23,7 +23,19 @@ public enum Type {
     FLOAT_ARRAY(Float[].class.getName()),
     LONG_ARRAY(Long[].class.getName()),
     DOUBLE_ARRAY(Double[].class.getName()),
-    STRING_ARRAY(String[].class.getName());
+    STRING_ARRAY(String[].class.getName()),
+    //collection
+    LIST(java.util.List.class.getName()),
+    ARRAYLIST(java.util.ArrayList.class.getName()),
+    LINKED_LIST(java.util.LinkedList.class.getName()),
+    MAP(java.util.Map.class.getName()),
+    HASH_MAP(java.util.HashMap.class.getName()),
+    TREE_MAP(java.util.TreeMap.class.getName()),
+    SET(java.util.Set.class.getName()),
+    HASH_SET(java.util.HashSet.class.getName()),
+    TREE_SET(java.util.TreeSet.class.getName()),
+    SORTED_SET(java.util.SortedSet.class.getName());
+
 
     private final String type;
 
