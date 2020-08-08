@@ -20,6 +20,7 @@ public class Student {
     private Integer[] ids;
     private String schoolName;
     private int num;
+    private List<String> friends;
     getters and setters ...   
 }
 ```
@@ -27,7 +28,7 @@ public class Student {
 对于这样一个Student对象，如果我们不对它的属性赋值的话，默认会是这样的
 
 ```java
-Student{id=null, age=null, name='null', ids=null, schoolName='null', num=0}
+Student{id=null, age=null, name='null', ids=null, schoolName='null', num=0, friends=null}
 ```
 
 很简单的道理，基本类型的num有默认值0，其他引用类型均为`null`
@@ -65,7 +66,7 @@ Student{id=null, age=null, name='null', ids=null, schoolName='null', num=0}
 > 等等...
 
 ```java
-Student{id=0, age=0, name='', ids=[], schoolName='', num=0}
+Student{id=0, age=0, name='', ids=[], schoolName='', num=0, friends=[]}
 ```
 
 但有时候我们希望的赋值可能不是上面定义的规则，这时可以使用`Configuration`灵活配置
@@ -85,7 +86,7 @@ Student{id=0, age=0, name='', ids=[], schoolName='', num=0}
         configuration.setDefaultConfig(Type.INTEGER, 1);
         configuration.setDefaultConfig(Type.STRING, "hi");
         configuration.setDefaultConfig(Type.INTEGER_ARRAY, new Integer[]{1, 2});
-
+        configuration.setDefaultConfig(Type.LIST, Arrays.asList("tom", "mike"));
         JHelper.setDefaultValue(student, configuration);
 
         System.out.println(student);
@@ -95,7 +96,7 @@ Student{id=0, age=0, name='', ids=[], schoolName='', num=0}
 这时`student`的输出就很有意思了
 
 ```java
-Student{id=1, age=1, name='hi', ids=[1, 2], schoolName='hi', num=0}
+Student{id=1, age=1, name='hi', ids=[1, 2], schoolName='hi', num=0, friends=[tom, mike]}
 ```
 
 还有一种可能，假如我们想对某些字段跳过，不让工具自动赋默认值，比如{XxxEntity}实体类，因为保存到数据库id自增的关系，我们希望id字段能保持为null，不要自动赋值，就可以使用`Configuration`的`setIgnoreFields`来处理
@@ -129,12 +130,27 @@ Student{id=1, age=1, name='hi', ids=[1, 2], schoolName='hi', num=0}
 此时的输出
 
 ```java
-Student{id=null, age=1, name='hi', ids=[1, 2], schoolName='null', num=0}
+Student{id=null, age=1, name='hi', ids=[1, 2], schoolName='null', num=0, friends=[]}
 ```
 
 如此，我们便可以方便的进行默认值的设置了
 
 以上所有的代码均在`test/java/`下，可直接运行测试
+
+### 如何自定义配置
+
+目前支持的自动赋值类型能够在`com.github.jteam.value.Type`下找到，这是一个枚举类型，目前支持9种基本的引用类型（如`Integer`、`String`等），9种数组类型和10种集合类型（如`List`、`Map`等）
+
+如果你需要支持更多的类型，或者其他规则，可以**实现**`Configuration`接口，默认有一个实现是`HashConfiguration`，如果你只是希望添加几种支持的自动赋值类型，你也可以直接继承`HashConfiguration`类，重写`addConfig()`方法，向configMap中添加设置，`Key`是希望匹配的全类名，`Value`是希望对这个类型设置的默认值。
+
+```java
+public class TestConfiguration extends HashConfiguration {
+    @Override
+    protected void addConfig() {
+        configMap.put(String.class.getName(), "default string");
+    }
+}
+```
 
 再次提醒：**[本工具原理是通过反射调用Getter和Setter方法进行赋值，因此需要传入的对象有这类方法]**
 
