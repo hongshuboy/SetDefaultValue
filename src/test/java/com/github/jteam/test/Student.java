@@ -1,6 +1,7 @@
 package com.github.jteam.test;
 
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * 测试类，注意num字段是基本类型，本身就有默认值，本工具不会对基本类型做任何操作
@@ -15,6 +16,7 @@ public class Student {
     private Integer[] ids;
     private String schoolName;
     private int num;
+    private List<String> friends;
 
     public Integer getId() {
         return id;
@@ -64,6 +66,14 @@ public class Student {
         this.num = num;
     }
 
+    public List<String> getFriends() {
+        return friends;
+    }
+
+    public void setFriends(List<String> friends) {
+        this.friends = friends;
+    }
+
     public Student() {
     }
 
@@ -77,6 +87,7 @@ public class Student {
                 ", ids=" + Arrays.toString(ids) +
                 ", schoolName='" + schoolName + '\'' +
                 ", num=" + num +
+                ", friends=" + friends +
                 '}';
     }
 }
