@@ -6,6 +6,8 @@ import com.github.jteam.configuration.impl.HashConfiguration;
 import com.github.jteam.value.Type;
 import org.junit.Test;
 
+import java.util.Arrays;
+
 /**
  * @author wp
  * 2020-08-04 08:40
@@ -38,6 +40,7 @@ public class Test1 {
         configuration.setDefaultConfig(Type.INTEGER, 1);
         configuration.setDefaultConfig(Type.STRING, "hi");
         configuration.setDefaultConfig(Type.INTEGER_ARRAY, new Integer[]{1, 2});
+        configuration.setDefaultConfig(Type.LIST, Arrays.asList("tom", "mike"));
 
         JHelper.setDefaultValue(student, configuration);
 
