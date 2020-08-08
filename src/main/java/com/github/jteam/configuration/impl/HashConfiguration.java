@@ -13,15 +13,21 @@ import java.util.stream.Collectors;
 public class HashConfiguration implements Configuration {
     public static final Configuration SINGLE_CONFIGURATION = new HashConfiguration(false);
     private final boolean modify;//是否可以被修改
-    private final HashMap<String, Object> configMap = new HashMap<>();
+    protected final HashMap<String, Object> configMap = new HashMap<>();
     private Set<String> ignoreSet = new TreeSet<>();
 
     {
-        initData();
+        initConfig();
+        addConfig();
+    }
+
+    //you can override this method to set your configuration
+    protected void addConfig() {
+
     }
 
     //can be override
-    private void initData() {
+    protected void initConfig() {
         configMap.clear();
         configMap.put(Type.BYTE.getType(), 0b00);
         configMap.put(Type.BOOLEAN.getType(), false);
