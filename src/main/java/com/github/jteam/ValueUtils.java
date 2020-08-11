@@ -21,7 +21,7 @@ import com.github.jteam.value.Type;
  * GitHub https://github.com/hongshuboy
  * 2020-08-03 12:47
  */
-public class JHelper {
+public class ValueUtils {
 
     /**
      * 为一个对象的所有引用类型设置默认值，默认值的设置来自于的设置{@link Configuration}
