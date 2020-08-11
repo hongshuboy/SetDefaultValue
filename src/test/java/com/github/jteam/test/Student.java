@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * 测试类，注意num字段是基本类型，本身就有默认值，本工具不会对基本类型做任何操作
  *
- * @author wp
+ * @author hongshuboy
  * 2020-08-03 14:25
  */
 public class Student {

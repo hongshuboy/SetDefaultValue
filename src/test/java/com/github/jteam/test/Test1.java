@@ -1,6 +1,6 @@
 package com.github.jteam.test;
 
-import com.github.jteam.JHelper;
+import com.github.jteam.ValueUtils;
 import com.github.jteam.configuration.Configuration;
 import com.github.jteam.configuration.impl.HashConfiguration;
 import com.github.jteam.value.Type;
@@ -9,7 +9,7 @@ import org.junit.Test;
 import java.util.Arrays;
 
 /**
- * @author wp
+ * @author hongshuboy
  * 2020-08-04 08:40
  */
 public class Test1 {
@@ -23,7 +23,7 @@ public class Test1 {
         final Student student = new Student();
 
 //      自动赋值
-        JHelper.setDefaultValue(student);
+        ValueUtils.setDefaultValue(student);
 
         System.out.println(student);
     }
@@ -42,7 +42,7 @@ public class Test1 {
         configuration.setDefaultConfig(Type.INTEGER_ARRAY, new Integer[]{1, 2});
         configuration.setDefaultConfig(Type.LIST, Arrays.asList("tom", "mike"));
 
-        JHelper.setDefaultValue(student, configuration);
+        ValueUtils.setDefaultValue(student, configuration);
 
         System.out.println(student);
     }
@@ -63,13 +63,30 @@ public class Test1 {
         configuration.setDefaultConfig(Type.INTEGER, 1);
         configuration.setDefaultConfig(Type.STRING, "hi");
         configuration.setDefaultConfig(Type.INTEGER_ARRAY, new Integer[]{1, 2});
-        /**
+        /*
          *  这里虽然设置的是ids和schOOlNamE字段，但实际比较的是ids和schoolName（会自动忽略大小写）
          *  同时，类中的字段在匹配时，也会被忽略大小写，所以这里可以完全不管大小写，均可匹配到属性
          */
         configuration.setIgnoreFields("id", "schOOlNamE");
 
-        JHelper.setDefaultValue(student, configuration);
+        ValueUtils.setDefaultValue(student, configuration);
+
+        System.out.println(student);
+    }
+
+    /**
+     * 根据字段，设置特定的值
+     * 字段名同样忽略大小写
+     */
+    @Test
+    public void test4(){
+        final Student student = new Student();
+
+        final Configuration configuration = new HashConfiguration();
+        configuration.setDefaultFieldConfig("id", 100);
+        configuration.setDefaultFieldConfig("schOOlNamE", "Harvard University");
+
+        ValueUtils.setDefaultValue(student, configuration);
 
         System.out.println(student);
     }
