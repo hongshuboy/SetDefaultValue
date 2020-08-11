@@ -3,11 +3,11 @@ package com.github.jteam.value;
 import com.github.jteam.configuration.Configuration;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 /**
  * @author hongshuboy
@@ -31,15 +31,13 @@ public class SetDefaultValue {
         for (Field field : fields) {
             fieldsList.add(field.getName());
         }
-        final Set<String> ignoreFields = configuration.getIgnoreFields();
         fieldsList.forEach((fieldName) -> {
             try {
-                if (!ignoreFields.contains(fieldName.toLowerCase())) {
+                if (!configuration.containsIgnoreField(fieldName)) {
                     final Method method = aClass.getDeclaredMethod(GET + toBigCamelCase(fieldName));
-                    final Object o = method.invoke(object);
-                    if (Objects.isNull(o)) {
-                        final Method setMethod = aClass.getDeclaredMethod(SET + toBigCamelCase(fieldName), method.getReturnType());
-                        setMethod.invoke(object, configuration.getDefaultValue(method.getReturnType().getName()));
+                    final Object value = method.invoke(object);
+                    if (Objects.isNull(value)) {
+                        setDefaultValue(object, configuration, aClass, fieldName, method);
                     }
                 }
             } catch (Exception e) {
@@ -47,6 +45,15 @@ public class SetDefaultValue {
             }
         });
         return object;
+    }
+
+    private static <T> void setDefaultValue(T object, Configuration configuration, Class<?> aClass, String fieldName, Method method) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+        final Method setMethod = aClass.getDeclaredMethod(SET + toBigCamelCase(fieldName), method.getReturnType());
+        if (configuration.containsFieldValueConfig(fieldName)){
+            setMethod.invoke(object, configuration.getDefaultFieldValue(fieldName));
+        }else{
+            setMethod.invoke(object, configuration.getDefaultValue(method.getReturnType().getName()));
+        }
     }
 
     private static String toBigCamelCase(String str) {

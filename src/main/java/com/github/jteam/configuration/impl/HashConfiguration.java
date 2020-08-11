@@ -7,14 +7,15 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * @author wp
+ * @author hongshuboy
  * 2020-08-05 12:37
  */
 public class HashConfiguration implements Configuration {
     public static final Configuration SINGLE_CONFIGURATION = new HashConfiguration(false);
     private final boolean modify;//是否可以被修改
     protected final HashMap<String, Object> configMap = new HashMap<>();
-    private Set<String> ignoreSet = new TreeSet<>();
+    private final HashMap<String, Object> configFieldMap = new HashMap<>();
+    private Set<String> ignoreSet = new HashSet<>();
 
     {
         initConfig();
@@ -23,7 +24,7 @@ public class HashConfiguration implements Configuration {
 
     //you can override this method to set your configuration
     protected void addConfig() {
-
+        //  configMap.put(xxxType, xxxDefaultValue);
     }
 
     //can be override
@@ -75,17 +76,6 @@ public class HashConfiguration implements Configuration {
     }
 
     /**
-     * 获取为某一属性设置的默认值
-     *
-     * @param type 需要查看的属性，如Type.Integer
-     * @return 为该属性设置的默认值
-     */
-    @Override
-    public Object getDefaultValue(Type type) {
-        return configMap.get(type.getType());
-    }
-
-    /**
      * 获取为某一属性设置的默认值，用户请使用 {@link #getDefaultValue(Type)}
      *
      * @param type 需要查看的属性
@@ -110,10 +100,10 @@ public class HashConfiguration implements Configuration {
         this.modify = modify;
     }
 
-    @SuppressWarnings("unchecked")
+
     @Override
-    public Set<String> getIgnoreFields() {
-        return ignoreSet;
+    public boolean containsIgnoreField(String fieldName) {
+        return ignoreSet.contains(fieldName.toLowerCase());
     }
 
     /**
@@ -129,5 +119,21 @@ public class HashConfiguration implements Configuration {
         ignoreSet.addAll(Arrays.asList(fields));
         ignoreSet = ignoreSet.stream().map(String::toLowerCase).collect(Collectors.toSet());
         return this;
+    }
+
+    @Override
+    public Configuration setDefaultFieldConfig(String fieldName, Object value) {
+        configFieldMap.put(fieldName.toLowerCase(), value);
+        return this;
+    }
+
+    @Override
+    public Object getDefaultFieldValue(String fieldName) {
+        return configFieldMap.get(fieldName.toLowerCase());
+    }
+
+    @Override
+    public boolean containsFieldValueConfig(String fieldName) {
+        return configFieldMap.containsKey(fieldName.toLowerCase());
     }
 }
