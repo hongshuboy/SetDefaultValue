@@ -163,6 +163,12 @@ public void test4(){
 }
 ```
 
+此时的输出
+
+```java
+Student{id=100, age=0, name='', ids=[], schoolName='Harvard University', num=0, friends=[]}
+```
+
 *以上所有的代码均在`test/java/`下，可直接运行测试*
 
 **5.如何自定义配置**
