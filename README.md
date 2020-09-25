@@ -75,7 +75,7 @@ Student{id=0, age=0, name='', ids=[], schoolName='', num=0, friends=[]}
 
 但有时候我们希望的赋值可能不是上面定义的规则，这时可以使用`Configuration`灵活配置
 
-加入我们希望Integer类型的默认值为`1`而非`0`、`String`的默认值为`hi`、Integer数组的默认值为包含`1`和`2`的数组，我们可以如下设置
+假如我们希望Integer类型的默认值为`1`而非`0`、`String`的默认值为`hi`、Integer数组的默认值为包含`1`和`2`的数组，我们可以如下设置
 
 ```java
 /**
