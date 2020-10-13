@@ -146,16 +146,18 @@ Student{id=null, age=1, name='hi', ids=[1, 2], schoolName='null', num=0, friends
 
 ```java
 /**
-  * 根据字段，设置特定的值
-  * 字段名同样忽略大小写
-  */
+ * 根据字段，设置特定的值
+ * 字段名同样忽略大小写
+ * - [1.2新增]：支持对基础类型赋值
+ */
 @Test
-public void test4(){
+public void test4() {
     final Student student = new Student();
 
     final Configuration configuration = new HashConfiguration();
-    configuration.setDefaultFieldConfig("id", 100);
-    configuration.setDefaultFieldConfig("schOOlNamE", "Harvard University");
+    //注意此处num的类型是基础类型int 这里同样支持
+    configuration.setUserDefaultFieldValueConfig("num", 100);
+    configuration.setUserDefaultFieldValueConfig("schOOlNamE", "Harvard University");
 
     ValueUtils.setDefaultValue(student, configuration);
 
@@ -166,12 +168,76 @@ public void test4(){
 此时的输出
 
 ```java
-Student{id=100, age=0, name='', ids=[], schoolName='Harvard University', num=0, friends=[]}
+Student{id=0, age=0, name='', ids=[], schoolName='Harvard University', num=100, friends=[]}
 ```
 
-*以上所有的代码均在`test/java/`下，可直接运行测试*
+**5.集合类型默认使用反射生成新对象**
 
-**5.如何自定义配置**
+```java
+/**
+ * [1.2新增]
+ * 集合类型默认使用反射生成新对象，避免后续操作时会互相影响
+ */
+@Test
+public void test5() {
+    //1.2新增测试字段List<String> family 和 friends类型一致
+    final Student student = new Student();
+
+    ValueUtils.setDefaultValue(student);
+
+    System.out.println(student);
+
+    student.getFriends().add("tom");
+    student.getFamily().add("mike");
+
+    //此处可以看到二者互相没有影响，正常使用
+    System.out.println(student);
+}
+```
+
+此时的输出
+
+```
+Student{id=0, age=0, name='', ids=[], schoolName='', num=0, friends=[], family=[]}
+Student{id=0, age=0, name='', ids=[], schoolName='', num=0, friends=[tom], family=[mike]}
+```
+
+**6.支持用户自定义反射生成新对象**
+
+```java
+/**
+ * [1.2新增]
+ * 若用户自定义的值为Class，则会使用反射来生成，普通对象不做处理，直接使用
+ */
+@Test
+public void test6() {
+    final Student student = new Student();
+
+    final Configuration configuration = new HashConfiguration();
+    //configuration.setDefaultConfig(Type.LIST, new LinkedList<>());
+    configuration.setDefaultConfig(Type.LIST, LinkedList.class);
+    ValueUtils.setDefaultValue(student, configuration);
+
+    student.getFriends().add("tom");
+    student.getFamily().add("mike");
+
+    System.out.println(student.getFamily().hashCode());
+    System.out.println(student.getFriends().hashCode());
+    System.out.println(student);
+}
+```
+
+此时的输出
+
+```
+3351573
+115057
+Student{id=0, age=0, name='', ids=[], schoolName='', num=0, friends=[tom], family=[mike]}
+```
+
+以上所有的代码均在`test/java/`下，可直接运行测试
+
+**7.如何自定义配置**
 
 目前支持的自动赋值类型能够在`com.github.jteam.value.Type`下找到，这是一个枚举类型，目前支持9种基本的引用类型（如`Integer`、`String`等），9种数组类型和10种集合类型（如`List`、`Map`等）
 
