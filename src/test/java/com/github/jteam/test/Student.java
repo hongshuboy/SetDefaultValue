@@ -17,6 +17,7 @@ public class Student {
     private String schoolName;
     private int num;
     private List<String> friends;
+    private List<String> family;
 
     public Integer getId() {
         return id;
@@ -74,9 +75,16 @@ public class Student {
         this.friends = friends;
     }
 
-    public Student() {
+    public List<String> getFamily() {
+        return family;
     }
 
+    public void setFamily(List<String> family) {
+        this.family = family;
+    }
+
+    public Student() {
+    }
 
     @Override
     public String toString() {
@@ -88,6 +96,7 @@ public class Student {
                 ", schoolName='" + schoolName + '\'' +
                 ", num=" + num +
                 ", friends=" + friends +
+                ", family=" + family +
                 '}';
     }
 }
