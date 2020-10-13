@@ -36,7 +36,7 @@ public class SetDefaultValue {
                 if (!configuration.containsIgnoreField(fieldName)) {
                     final Method method = aClass.getDeclaredMethod(GET + toBigCamelCase(fieldName));
                     final Object value = method.invoke(object);
-                    if (Objects.isNull(value)) {
+                    if (Objects.isNull(value) || configuration.getUserDefaultFieldValue(fieldName) != null) {
                         setDefaultValue(object, configuration, aClass, fieldName, method);
                     }
                 }
@@ -47,12 +47,19 @@ public class SetDefaultValue {
         return object;
     }
 
-    private static <T> void setDefaultValue(T object, Configuration configuration, Class<?> aClass, String fieldName, Method method) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+    private static <T> void setDefaultValue(T object, Configuration configuration, Class<?> aClass, String fieldName, Method method) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
         final Method setMethod = aClass.getDeclaredMethod(SET + toBigCamelCase(fieldName), method.getReturnType());
-        if (configuration.containsFieldValueConfig(fieldName)){
-            setMethod.invoke(object, configuration.getDefaultFieldValue(fieldName));
-        }else{
-            setMethod.invoke(object, configuration.getDefaultValue(method.getReturnType().getName()));
+        Object value;
+        //优先根据用户配置的字段名进行匹配
+        value = configuration.getUserDefaultFieldValue(fieldName);
+        //使用configMap，根据Type获取默认值
+        if (value == null) {
+            value = configuration.getDefaultValue(method.getReturnType().getName());
+        }
+        if (value instanceof Class) {
+            setMethod.invoke(object, ((Class<?>) value).newInstance());
+        } else {
+            setMethod.invoke(object, value);
         }
     }
 
