@@ -16,6 +16,14 @@ public interface Configuration {
     Configuration setDefaultConfig(Type type, Object value);
 
     /**
+     * 设置默认值
+     *
+     * @param type  若Type枚举类没有提供的类型，可以使用此方法在此设置
+     * @param value 为Type设置的默认值
+     */
+    Configuration setDefaultConfig(String type, Object value);
+
+    /**
      * 获取为某一属性设置的默认值
      *
      * @param type 需要查看的属性，如Type.Integer
@@ -26,7 +34,7 @@ public interface Configuration {
     }
 
     /**
-     * 获取为某一属性设置的默认值，用户请使用 {@link #getDefaultValue(Type)}
+     * 获取为某一属性设置的默认值
      *
      * @param type 需要查看的属性
      * @return 为该属性设置的默认值
@@ -44,33 +52,33 @@ public interface Configuration {
     /**
      * 是否会跳过赋值该字段
      *
-     * @param fieldName
+     * @param fieldName 属性名
      * @return boolean
      */
     boolean containsIgnoreField(String fieldName);
 
     /**
-     * 根据属性名设置默认值
+     * 用户自定义，根据属性名设置默认值
      *
      * @param fieldName 属性名
      * @param value     为该属性设置的默认值
      * @return Configuration
      */
-    Configuration setDefaultFieldConfig(String fieldName, Object value);
+    Configuration setUserDefaultFieldValueConfig(String fieldName, Object value);
 
     /**
-     * 返回为该属性设置的默认值
+     * 用户为该属性设置的默认值
      *
      * @param fieldName 属性名
      * @return 默认值
      */
-    Object getDefaultFieldValue(String fieldName);
+    Object getUserDefaultFieldValue(String fieldName);
 
     /**
-     * 是否单独配置了该属性
+     * 用户是否单独配置了该属性
      *
-     * @param fieldName
+     * @param fieldName 需要为全类名的字符串形式，例如List.class.getName()
      * @return boolean
      */
-    boolean containsFieldValueConfig(String fieldName);
+    boolean containsUserFieldValueConfig(String fieldName);
 }
