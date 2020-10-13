@@ -1,6 +1,7 @@
 package com.github.jteam.configuration.impl;
 
 import com.github.jteam.configuration.Configuration;
+import com.github.jteam.value.SimpleConfigTemplate;
 import com.github.jteam.value.Type;
 
 import java.util.*;
@@ -11,10 +12,10 @@ import java.util.stream.Collectors;
  * 2020-08-05 12:37
  */
 public class HashConfiguration implements Configuration {
-    public static final Configuration SINGLE_CONFIGURATION = new HashConfiguration(false);
-    private final boolean modify;//是否可以被修改
-    protected final HashMap<String, Object> configMap = new HashMap<>();
-    private final HashMap<String, Object> configFieldMap = new HashMap<>();
+    //key  ->  type        value  ->  object or class
+    protected final Map<String, Object> configMap = new HashMap<>();
+    //key  ->  fileName    value  ->  object or class
+    private final Map<String, Object> userConfigFieldMap = new HashMap<>();
     private Set<String> ignoreSet = new HashSet<>();
 
     {
@@ -40,27 +41,11 @@ public class HashConfiguration implements Configuration {
         configMap.put(Type.DOUBLE.getType(), 0.0);
         configMap.put(Type.STRING.getType(), "");
         //array
-        configMap.put(Type.BYTE_ARRAY.getType(), new Byte[0]);
-        configMap.put(Type.BOOLEAN_ARRAY.getType(), new Boolean[0]);
-        configMap.put(Type.CHARACTER_ARRAY.getType(), new Character[0]);
-        configMap.put(Type.SHORT_ARRAY.getType(), new Short[0]);
-        configMap.put(Type.INTEGER_ARRAY.getType(), new Integer[0]);
-        configMap.put(Type.FLOAT_ARRAY.getType(), new Float[0]);
-        configMap.put(Type.LONG_ARRAY.getType(), new Long[0]);
-        configMap.put(Type.DOUBLE_ARRAY.getType(), new Double[0]);
-        configMap.put(Type.STRING_ARRAY.getType(), new String[0]);
+        SimpleConfigTemplate.arrayConfig(configMap);
         //collection
-        configMap.put(Type.LIST.getType(), new ArrayList<>());
-        configMap.put(Type.ARRAYLIST.getType(), new ArrayList<>());
-        configMap.put(Type.LINKED_LIST.getType(), new LinkedList<>());
-        configMap.put(Type.MAP.getType(), new TreeMap<>());
-        configMap.put(Type.HASH_MAP.getType(), new HashMap<>());
-        configMap.put(Type.TREE_MAP.getType(), new TreeMap<>());
-        configMap.put(Type.SET.getType(), new TreeSet<>());
-        configMap.put(Type.SORTED_SET.getType(), new TreeSet<>());
-        configMap.put(Type.TREE_SET.getType(), new TreeSet<>());
-        configMap.put(Type.HASH_SET.getType(), new HashSet<>());
+        SimpleConfigTemplate.collectionConfig(configMap);
     }
+
 
     /**
      * 设置默认值
@@ -70,13 +55,18 @@ public class HashConfiguration implements Configuration {
      */
     @Override
     public Configuration setDefaultConfig(Type type, Object value) {
-        modifiable();
         configMap.put(type.getType(), value);
         return this;
     }
 
+    @Override
+    public Configuration setDefaultConfig(String type, Object value) {
+        configMap.put(type, value);
+        return this;
+    }
+
     /**
-     * 获取为某一属性设置的默认值，用户请使用 {@link #getDefaultValue(Type)}
+     * 获取为某一属性设置的默认值
      *
      * @param type 需要查看的属性
      * @return 为该属性设置的默认值
@@ -86,20 +76,8 @@ public class HashConfiguration implements Configuration {
         return configMap.get(type);
     }
 
-    private void modifiable() {
-        if (!modify) {
-            throw new RuntimeException("single_configuration is not modifiable");
-        }
-    }
-
     public HashConfiguration() {
-        this.modify = true;
     }
-
-    public HashConfiguration(Boolean modify) {
-        this.modify = modify;
-    }
-
 
     @Override
     public boolean containsIgnoreField(String fieldName) {
@@ -115,25 +93,24 @@ public class HashConfiguration implements Configuration {
     @SuppressWarnings({"unchecked"})
     @Override
     public Configuration setIgnoreFields(String... fields) {
-        modifiable();
         ignoreSet.addAll(Arrays.asList(fields));
         ignoreSet = ignoreSet.stream().map(String::toLowerCase).collect(Collectors.toSet());
         return this;
     }
 
     @Override
-    public Configuration setDefaultFieldConfig(String fieldName, Object value) {
-        configFieldMap.put(fieldName.toLowerCase(), value);
+    public Configuration setUserDefaultFieldValueConfig(String fieldName, Object value) {
+        userConfigFieldMap.put(fieldName.toLowerCase(), value);
         return this;
     }
 
     @Override
-    public Object getDefaultFieldValue(String fieldName) {
-        return configFieldMap.get(fieldName.toLowerCase());
+    public Object getUserDefaultFieldValue(String fieldName) {
+        return userConfigFieldMap.get(fieldName.toLowerCase());
     }
 
     @Override
-    public boolean containsFieldValueConfig(String fieldName) {
-        return configFieldMap.containsKey(fieldName.toLowerCase());
+    public boolean containsUserFieldValueConfig(String fieldName) {
+        return userConfigFieldMap.containsKey(fieldName.toLowerCase());
     }
 }

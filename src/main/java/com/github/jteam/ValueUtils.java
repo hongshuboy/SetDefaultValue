@@ -2,6 +2,7 @@ package com.github.jteam;
 
 import com.github.jteam.configuration.Configuration;
 import com.github.jteam.configuration.impl.HashConfiguration;
+import com.github.jteam.configuration.impl.SingleHashConfiguration;
 import com.github.jteam.value.SetDefaultValue;
 import com.github.jteam.value.Type;
 
@@ -35,6 +36,6 @@ public class ValueUtils {
     }
 
     public static <T> T setDefaultValue(T object) {
-        return setDefaultValue(object, HashConfiguration.SINGLE_CONFIGURATION);
+        return setDefaultValue(object, SingleHashConfiguration.getInstance());
     }
 }
