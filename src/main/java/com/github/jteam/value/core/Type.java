@@ -1,4 +1,4 @@
-package com.github.jteam.value;
+package com.github.jteam.value.core;
 
 /**
  * @author hongshuboy

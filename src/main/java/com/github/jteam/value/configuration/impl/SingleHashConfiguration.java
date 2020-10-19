@@ -1,7 +1,7 @@
-package com.github.jteam.configuration.impl;
+package com.github.jteam.value.configuration.impl;
 
-import com.github.jteam.configuration.Configuration;
-import com.github.jteam.value.Type;
+import com.github.jteam.value.configuration.Configuration;
+import com.github.jteam.value.core.Type;
 
 import java.util.concurrent.locks.ReentrantLock;
 

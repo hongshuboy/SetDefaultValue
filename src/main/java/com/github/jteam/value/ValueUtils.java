@@ -1,10 +1,9 @@
-package com.github.jteam;
+package com.github.jteam.value;
 
-import com.github.jteam.configuration.Configuration;
-import com.github.jteam.configuration.impl.HashConfiguration;
-import com.github.jteam.configuration.impl.SingleHashConfiguration;
-import com.github.jteam.value.SetDefaultValue;
-import com.github.jteam.value.Type;
+import com.github.jteam.value.configuration.Configuration;
+import com.github.jteam.value.configuration.impl.SingleHashConfiguration;
+import com.github.jteam.value.core.SetDefaultValue;
+import com.github.jteam.value.core.Type;
 
 /**
  *          _                                _

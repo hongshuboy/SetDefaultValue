@@ -1,9 +1,9 @@
-package com.github.jteam.test;
+package com.github.jteam.value.test;
 
-import com.github.jteam.ValueUtils;
-import com.github.jteam.configuration.Configuration;
-import com.github.jteam.configuration.impl.HashConfiguration;
-import com.github.jteam.value.Type;
+import com.github.jteam.value.ValueUtils;
+import com.github.jteam.value.configuration.Configuration;
+import com.github.jteam.value.configuration.impl.HashConfiguration;
+import com.github.jteam.value.core.Type;
 import org.junit.Test;
 
 import java.util.Arrays;

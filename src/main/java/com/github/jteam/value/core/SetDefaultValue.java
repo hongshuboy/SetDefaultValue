@@ -1,6 +1,6 @@
-package com.github.jteam.value;
+package com.github.jteam.value.core;
 
-import com.github.jteam.configuration.Configuration;
+import com.github.jteam.value.configuration.Configuration;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
