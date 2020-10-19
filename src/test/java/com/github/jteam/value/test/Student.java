@@ -1,4 +1,4 @@
-package com.github.jteam.test;
+package com.github.jteam.value.test;
 
 import java.util.Arrays;
 import java.util.List;

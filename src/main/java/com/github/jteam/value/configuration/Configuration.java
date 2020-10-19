@@ -1,6 +1,6 @@
-package com.github.jteam.configuration;
+package com.github.jteam.value.configuration;
 
-import com.github.jteam.value.Type;
+import com.github.jteam.value.core.Type;
 
 /**
  * @author hongshuboy
