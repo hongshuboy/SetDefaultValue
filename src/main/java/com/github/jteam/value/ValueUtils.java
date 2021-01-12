@@ -2,7 +2,7 @@ package com.github.jteam.value;
 
 import com.github.jteam.value.configuration.Configuration;
 import com.github.jteam.value.configuration.impl.SingleHashConfiguration;
-import com.github.jteam.value.core.SetDefaultValue;
+import com.github.jteam.value.core.ValueEngine;
 import com.github.jteam.value.core.Type;
 
 /**
@@ -31,7 +31,8 @@ public class ValueUtils {
      * @return 设置好默认值的对象，因为是引用对象，也可以忽略该返回值
      */
     public static <T> T setDefaultValue(T object, Configuration configuration) {
-        return SetDefaultValue.setDefaultValue(object, configuration);
+        final ValueEngine<T> valueEngine = new ValueEngine<>(object, configuration);
+        return valueEngine.setDefaultValue();
     }
 
     public static <T> T setDefaultValue(T object) {

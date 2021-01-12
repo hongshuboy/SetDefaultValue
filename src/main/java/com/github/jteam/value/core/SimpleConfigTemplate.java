@@ -22,7 +22,7 @@ public class SimpleConfigTemplate {
 
     /**
      * 使用反射方式的Collection Config
-     * @param configMap
+     * @param configMap configMap
      */
     public static void collectionConfig(Map<String, Object> configMap) {
         configMap.put(Type.LIST.getType(), ArrayList.class);
@@ -41,7 +41,7 @@ public class SimpleConfigTemplate {
      * 单例方式的Collection Config（不推荐）<br />
      *    - 如果你不清楚这会造成什么问题，请不要手动改为使用这种方式<br />
      *    - 如果要使用单例空集合，推荐使用Collections.emptyList()等进行覆盖
-     * @param configMap
+     * @param configMap configMap
      */
     public static void collectionConfigSingleton(Map<String, Object> configMap) {
         configMap.put(Type.LIST.getType(), new ArrayList<>());

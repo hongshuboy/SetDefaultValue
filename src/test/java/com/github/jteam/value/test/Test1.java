@@ -134,4 +134,11 @@ public class Test1 {
         System.out.println(student.getFriends().hashCode());
         System.out.println(student);
     }
+
+    @Test
+    public void test7(){
+        final Senior senior = new Senior();
+        ValueUtils.setDefaultValue(senior);
+        System.out.println(senior);
+    }
 }
