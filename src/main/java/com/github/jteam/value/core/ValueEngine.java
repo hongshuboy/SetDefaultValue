@@ -9,12 +9,27 @@ import java.util.*;
 
 /**
  * Value Engine
+ *
  * @author hongshuboy
  * 2020-08-03 12:50
  */
-public class ValueEngine <T>{
+public class ValueEngine<T> {
     private final T object;
     private final Configuration configuration;
+    private final static Map<String, Object> primitiveTypeMap;
+
+    static {
+        Map<String, Object> tmpMap = new HashMap<>(1 << 4);
+        tmpMap.put(byte.class.getName(), 0b00);
+        tmpMap.put(boolean.class.getName(), false);
+        tmpMap.put(char.class.getName(), ' ');
+        tmpMap.put(short.class.getName(), 0);
+        tmpMap.put(int.class.getName(), 0);
+        tmpMap.put(float.class.getName(), 0f);
+        tmpMap.put(long.class.getName(), 0L);
+        tmpMap.put(double.class.getName(), 0.0);
+        primitiveTypeMap = Collections.unmodifiableMap(tmpMap);
+    }
 
     /**
      * 为一个对象的所有引用类型设置默认值，默认值的设置来自于的设置{@link Configuration}
@@ -23,52 +38,38 @@ public class ValueEngine <T>{
      * @param configuration 配置类，它将决定默认值为多少，可以使用{@link Configuration#setDefaultConfig(Type, Object)}来设置
      * @return 设置好默认值的对象，因为是引用对象，也可以忽略该返回值
      */
-    public T setDefaultValue() {
+    public T setDefaultValue() throws InvocationTargetException, IllegalAccessException, InstantiationException {
         final Class<?> aClass = object.getClass();
         //封装所有属性
-        final List<ReflectWrapper> wrappers = getAllAttr(object, aClass);
+        final List<FieldWrapper> wrappers = getAllAttr(object, aClass);
 
-
-//        List<String> fieldsList = new ArrayList<>(fields.size() + 1);
-//        for (Field field : fields) {
-//            fieldsList.add(field.getName());
-//        }
-        /*fieldsList.forEach((fieldName) -> {
-            try {
-                if (!configuration.containsIgnoreField(fieldName)) {
-                    final Method method = aClass.getDeclaredMethod(GET + toBigCamelCase(fieldName));
-                    final Object value = method.invoke(object);
-                    if (Objects.isNull(value) || configuration.getUserDefaultFieldValue(fieldName) != null) {
-                        setDefaultValue(object, configuration, aClass, fieldName, method);
-                    }
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
+        for (FieldWrapper fieldWrapper : wrappers) {
+            final Method getterMethod = fieldWrapper.getGetterMethod();
+            final Object o = getterMethod.invoke(object);
+            if (Objects.isNull(o)) {
+                setDefaultValueReference(fieldWrapper);
+            } else if (configuration.getUserDefaultFieldValue(fieldWrapper.getFieldName()) != null
+                    && isPrimitiveAndDefaultValue(o)) {
+                //基本数据类型
+                setDefaultValuePrimitive(fieldWrapper);
             }
-        });*/
-
-
-//        for (Field field : fields) {
-//            try {
-//                if (!field.isAccessible()) {
-//                    field.setAccessible(true);
-//                }
-//                final Object o = field.get(object);
-//                if (o == null) {
-//                    field.set(object, configuration.getDefaultValue(field.getType().getName()));
-//                }
-//            } catch (IllegalAccessException e) {
-//                e.printStackTrace();
-//            }
-//        }
+        }
         return object;
     }
 
-    private List<ReflectWrapper> getAllAttr(T object, Class<?> aClass) {
-        List<ReflectWrapper> fields = new LinkedList<>();
+    /**
+     * 是否是基本数据类型并且是默认值
+     */
+    private boolean isPrimitiveAndDefaultValue(Object o) {
+        final Object findValue = primitiveTypeMap.get(o.getClass().getName());
+        return findValue != null && o == findValue;
+    }
+
+    private List<FieldWrapper> getAllAttr(T object, Class<?> aClass) {
+        List<FieldWrapper> fields = new LinkedList<>();
         while (aClass != null) {
             try {
-                fields.addAll(getSuperWrapperFields(aClass));
+                fields.addAll(getAllWrappedFields(aClass));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -77,41 +78,39 @@ public class ValueEngine <T>{
         return fields;
     }
 
-    private Collection<ReflectWrapper> getSuperWrapperFields(Class<?> aClass) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, InstantiationException {
+    private Collection<FieldWrapper> getAllWrappedFields(Class<?> aClass) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, InstantiationException {
         if (aClass == null) return null;
-        final List<ReflectWrapper> list = new LinkedList<>();
+        final List<FieldWrapper> list = new LinkedList<>();
         final Field[] declaredFields = aClass.getDeclaredFields();
         for (Field field : declaredFields) {
-            final Method getterMethod = InternalUtils.getGetterMethod(aClass, field.getName());
-            final Object o = getterMethod.invoke(object);
-            //设置默认值
-//            if (Objects.isNull(o)) {
-                /*Object defaultValue = null;
-                //用户为这个属性设置了默认值
-                if (configuration.getUserDefaultFieldValue(field.getName()) != null) {
-                    defaultValue = configuration.getUserDefaultFieldValue(field.getName());
-                }
-                final Method setterMethod = aClass.getDeclaredMethod(InternalUtils.getSetterMethodName(field.getName()));
-                setDefaultValue(aClass, field.getName(), InternalUtils.getSetterMethod(aClass, field.getName()));
-            }
+            list.add(new FieldWrapper(aClass, aClass == object.getClass(), field));
         }
-        return null;
+        return list;
     }
 
-    private void setDefaultValue(Class<?> aClass, String fieldName, Method setterMethod) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
-//        final Method setMethod = aClass.getDeclaredMethod(SET + InternalUtils.toBigCamelCase(fieldName), method.getReturnType());
+    /**
+     * 引用类型的默认值赋值
+     */
+    private void setDefaultValueReference(FieldWrapper fieldWrapper) throws IllegalAccessException, InstantiationException, InvocationTargetException {
         Object value;
         //优先根据用户配置的字段名进行匹配
-        value = configuration.getUserDefaultFieldValue(fieldName);
+        value = configuration.getUserDefaultFieldValue(fieldWrapper.getFieldName().toLowerCase());
         //使用configMap，根据Type获取默认值
         if (value == null) {
-            value = configuration.getDefaultValue(method.getReturnType().getName());
+            value = configuration.getDefaultValue(fieldWrapper.getField().getType().getName());
         }
         if (value instanceof Class) {
-            setMethod.invoke(object, ((Class<?>) value).newInstance());
+            fieldWrapper.getSetterMethod().invoke(object, ((Class<?>) value).newInstance());
         } else {
-            setMethod.invoke(object, value);
+            fieldWrapper.getSetterMethod().invoke(object, value);
         }
+    }
+
+    /**
+     * 基本数据类型的默认值赋值
+     */
+    private void setDefaultValuePrimitive(FieldWrapper fieldWrapper) throws InvocationTargetException, IllegalAccessException {
+        fieldWrapper.getSetterMethod().invoke(object, configuration.getUserDefaultFieldValue(fieldWrapper.getFieldName()))
     }
 
     public ValueEngine(T object, Configuration configuration) {

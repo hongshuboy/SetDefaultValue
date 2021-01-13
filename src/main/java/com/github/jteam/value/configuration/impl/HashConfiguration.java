@@ -8,6 +8,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
+ * Hash Configuration
  * @author hongshuboy
  * 2020-08-05 12:37
  */

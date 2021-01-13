@@ -5,6 +5,8 @@ import com.github.jteam.value.configuration.impl.SingleHashConfiguration;
 import com.github.jteam.value.core.ValueEngine;
 import com.github.jteam.value.core.Type;
 
+import java.lang.reflect.InvocationTargetException;
+
 /**
  *          _                                _
  *        | |                              | |
@@ -32,7 +34,12 @@ public class ValueUtils {
      */
     public static <T> T setDefaultValue(T object, Configuration configuration) {
         final ValueEngine<T> valueEngine = new ValueEngine<>(object, configuration);
-        return valueEngine.setDefaultValue();
+        try {
+            return valueEngine.setDefaultValue();
+        } catch (InvocationTargetException | IllegalAccessException | InstantiationException e) {
+            e.printStackTrace();
+        }
+        return object;
     }
 
     public static <T> T setDefaultValue(T object) {

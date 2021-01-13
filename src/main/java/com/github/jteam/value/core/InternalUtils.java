@@ -16,8 +16,8 @@ public class InternalUtils {
         return aClass.getMethod(GET.concat(toBigCamelCase(fieldName)));
     }
 
-    public static Method getSetterMethod(Class<?> aClass, String fieldName) throws NoSuchMethodException {
-        return aClass.getMethod(SET.concat(toBigCamelCase(fieldName)));
+    public static Method getSetterMethod(Class<?> aClass, String fieldName, Class<?> paramType) throws NoSuchMethodException {
+        return aClass.getMethod(SET.concat(toBigCamelCase(fieldName)), paramType);
     }
 
     /**

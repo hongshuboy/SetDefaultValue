@@ -9,13 +9,13 @@ import java.lang.reflect.Method;
  * @author hongshuboy
  * date  2021/1/12 ÉÏÎç 10:41
  */
-public class ReflectWrapper {
+public class FieldWrapper {
     private Class<?> cls;
     private boolean isSupperClass;
     private Field field;
     private String fieldName;
-    private Method setter;
-    private Method getter;
+    private Method setterMethod;
+    private Method getterMethod;
 
     public Class<?> getCls() {
         return cls;
@@ -49,19 +49,28 @@ public class ReflectWrapper {
         this.fieldName = fieldName;
     }
 
-    public Method getSetter() {
-        return setter;
+    public Method getSetterMethod() {
+        return setterMethod;
     }
 
-    public void setSetter(Method setter) {
-        this.setter = setter;
+    public void setSetterMethod(Method setterMethod) {
+        this.setterMethod = setterMethod;
     }
 
-    public Method getGetter() {
-        return getter;
+    public Method getGetterMethod() {
+        return getterMethod;
     }
 
-    public void setGetter(Method getter) {
-        this.getter = getter;
+    public void setGetterMethod(Method getterMethod) {
+        this.getterMethod = getterMethod;
+    }
+
+    public FieldWrapper(Class<?> cls, boolean isSupperClass, Field field) throws NoSuchMethodException {
+        this.cls = cls;
+        this.isSupperClass = isSupperClass;
+        this.field = field;
+        this.fieldName = field.getName();
+        this.setterMethod = InternalUtils.getSetterMethod(this.getCls(), this.getFieldName(), field.getType());
+        this.getterMethod = InternalUtils.getGetterMethod(this.getCls(), this.getFieldName());
     }
 }
