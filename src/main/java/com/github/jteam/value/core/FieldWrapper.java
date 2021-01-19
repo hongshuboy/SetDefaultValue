@@ -7,7 +7,7 @@ import java.lang.reflect.Method;
  * 反射的目标类所有的属性包装
  *
  * @author hongshuboy
- * date  2021/1/12 上午 10:41
+ * Date: 2021/1/12 上午 10:41
  */
 public class FieldWrapper {
     private Class<?> cls;

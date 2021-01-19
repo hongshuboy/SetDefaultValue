@@ -1,8 +1,10 @@
 package com.github.jteam.value.test;
 
 /**
- * @author wangpeng
- * date  2021/1/11 обнГ 1:37
+ * Senior extends Student
+ *
+ * @author hongshuboy
+ * Date: 2021/1/11 обнГ 1:37
  */
 public class Senior extends Student {
     private String grade;

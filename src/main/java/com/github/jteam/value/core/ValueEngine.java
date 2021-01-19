@@ -11,31 +11,16 @@ import java.util.*;
  * Value Engine
  *
  * @author hongshuboy
- * 2020-08-03 12:50
+ * Date: 2020-08-03 12:50
  */
 public class ValueEngine<T> {
     private final T object;
     private final Configuration configuration;
     private final static Map<String, Object> primitiveTypeMap;
 
-    static {
-        Map<String, Object> tmpMap = new HashMap<>(1 << 4);
-        tmpMap.put(byte.class.getName(), 0b00);
-        tmpMap.put(boolean.class.getName(), false);
-        tmpMap.put(char.class.getName(), ' ');
-        tmpMap.put(short.class.getName(), 0);
-        tmpMap.put(int.class.getName(), 0);
-        tmpMap.put(float.class.getName(), 0f);
-        tmpMap.put(long.class.getName(), 0L);
-        tmpMap.put(double.class.getName(), 0.0);
-        primitiveTypeMap = Collections.unmodifiableMap(tmpMap);
-    }
-
     /**
      * 为一个对象的所有引用类型设置默认值，默认值的设置来自于的设置{@link Configuration}
      *
-     * @param object        需要设置默认值的对象
-     * @param configuration 配置类，它将决定默认值为多少，可以使用{@link Configuration#setDefaultConfig(Type, Object)}来设置
      * @return 设置好默认值的对象，因为是引用对象，也可以忽略该返回值
      */
     public T setDefaultValue() throws InvocationTargetException, IllegalAccessException, InstantiationException {
@@ -46,10 +31,11 @@ public class ValueEngine<T> {
         for (FieldWrapper fieldWrapper : wrappers) {
             final Method getterMethod = fieldWrapper.getGetterMethod();
             final Object o = getterMethod.invoke(object);
+            if (configuration.containsIgnoreField(fieldWrapper.getFieldName())) continue;
             if (Objects.isNull(o)) {
                 setDefaultValueReference(fieldWrapper);
             } else if (configuration.getUserDefaultFieldValue(fieldWrapper.getFieldName()) != null
-                    && isPrimitiveAndDefaultValue(o)) {
+                    && isPrimitiveAndDefaultValue(o, fieldWrapper)) {
                 //基本数据类型
                 setDefaultValuePrimitive(fieldWrapper);
             }
@@ -60,9 +46,9 @@ public class ValueEngine<T> {
     /**
      * 是否是基本数据类型并且是默认值
      */
-    private boolean isPrimitiveAndDefaultValue(Object o) {
-        final Object findValue = primitiveTypeMap.get(o.getClass().getName());
-        return findValue != null && o == findValue;
+    private boolean isPrimitiveAndDefaultValue(Object o, FieldWrapper fieldWrapper) {
+        final Object findValue = primitiveTypeMap.get(fieldWrapper.getField().getType().getName());
+        return findValue != null && Objects.equals(o, findValue);
     }
 
     private List<FieldWrapper> getAllAttr(T object, Class<?> aClass) {
@@ -110,11 +96,24 @@ public class ValueEngine<T> {
      * 基本数据类型的默认值赋值
      */
     private void setDefaultValuePrimitive(FieldWrapper fieldWrapper) throws InvocationTargetException, IllegalAccessException {
-        fieldWrapper.getSetterMethod().invoke(object, configuration.getUserDefaultFieldValue(fieldWrapper.getFieldName()))
+        fieldWrapper.getSetterMethod().invoke(object, configuration.getUserDefaultFieldValue(fieldWrapper.getFieldName()));
     }
 
     public ValueEngine(T object, Configuration configuration) {
         this.object = object;
         this.configuration = configuration;
+    }
+
+    static {
+        Map<String, Object> tmpMap = new HashMap<>(1 << 4);
+        tmpMap.put(byte.class.getName(), 0b00);
+        tmpMap.put(boolean.class.getName(), false);
+        tmpMap.put(char.class.getName(), ' ');
+        tmpMap.put(short.class.getName(), 0);
+        tmpMap.put(int.class.getName(), 0);
+        tmpMap.put(float.class.getName(), 0f);
+        tmpMap.put(long.class.getName(), 0L);
+        tmpMap.put(double.class.getName(), 0.0);
+        primitiveTypeMap = Collections.unmodifiableMap(tmpMap);
     }
 }

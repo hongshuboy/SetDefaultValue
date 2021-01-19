@@ -3,8 +3,10 @@ package com.github.jteam.value.configuration;
 import com.github.jteam.value.core.Type;
 
 /**
+ * Configuration
+ *
  * @author hongshuboy
- * 2020-08-05 12:39
+ * Date: 2020-08-05 12:39
  */
 public interface Configuration {
     /**

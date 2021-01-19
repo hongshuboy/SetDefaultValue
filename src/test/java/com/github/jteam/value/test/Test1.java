@@ -10,8 +10,10 @@ import java.util.Arrays;
 import java.util.LinkedList;
 
 /**
+ * 测试类
+ *
  * @author hongshuboy
- * 2020-08-04 08:40
+ * Date: 2020-08-04 08:40
  */
 public class Test1 {
 
@@ -135,8 +137,13 @@ public class Test1 {
         System.out.println(student);
     }
 
+    /**
+     * [2.1新增]
+     * 增加对继承的支持, 使用和以前一样, 毫无影响
+     * Senior extends Student
+     */
     @Test
-    public void test7(){
+    public void test7() {
         final Senior senior = new Senior();
         ValueUtils.setDefaultValue(senior);
         System.out.println(senior);

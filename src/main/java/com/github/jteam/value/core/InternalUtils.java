@@ -6,7 +6,7 @@ import java.lang.reflect.Method;
  * 内部工具类
  *
  * @author hongshuboy
- * date  2021/1/12 上午 11:27
+ * Date: 2021/1/12 上午 11:27
  */
 public class InternalUtils {
     private static final String GET = "get";

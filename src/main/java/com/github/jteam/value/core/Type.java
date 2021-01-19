@@ -1,6 +1,8 @@
 package com.github.jteam.value.core;
 
 /**
+ * Java常见类型的枚举类
+ *
  * @author hongshuboy
  * 2020-08-03 13:53
  */

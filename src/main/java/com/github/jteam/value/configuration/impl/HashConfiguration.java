@@ -9,8 +9,9 @@ import java.util.stream.Collectors;
 
 /**
  * Hash Configuration
+ *
  * @author hongshuboy
- * 2020-08-05 12:37
+ * Date: 2020-08-05 12:37
  */
 public class HashConfiguration implements Configuration {
     //key  ->  type        value  ->  object or class

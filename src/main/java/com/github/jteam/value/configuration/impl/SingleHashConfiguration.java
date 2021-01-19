@@ -6,8 +6,10 @@ import com.github.jteam.value.core.Type;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
- * @Author: hongshuboy
- * @Date: 2020/10/13 上午 11:36
+ * SingleHashConfiguration 单例模式的默认配置类
+ *
+ * @author hongshuboy
+ * Date: 2020/10/13 上午 11:36
  */
 public final class SingleHashConfiguration extends HashConfiguration {
     private static final String SINGLE_CONFIGURATION_IS_NOT_MODIFIABLE = "single_configuration is not modifiable";
