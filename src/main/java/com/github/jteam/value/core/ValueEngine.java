@@ -34,7 +34,7 @@ public class ValueEngine<T> {
             if (configuration.containsIgnoreField(fieldWrapper.getFieldName())) continue;
             if (Objects.isNull(o)) {
                 setDefaultValueReference(fieldWrapper);
-            } else if (configuration.getUserDefaultFieldValue(fieldWrapper.getFieldName()) != null
+            } else if (configuration.containsFieldNameConfig(fieldWrapper.getFieldName())
                     && isPrimitiveAndDefaultValue(o, fieldWrapper)) {
                 //基本数据类型
                 setDefaultValuePrimitive(fieldWrapper);
@@ -80,7 +80,7 @@ public class ValueEngine<T> {
     private void setDefaultValueReference(FieldWrapper fieldWrapper) throws IllegalAccessException, InstantiationException, InvocationTargetException {
         Object value;
         //优先根据用户配置的字段名进行匹配
-        value = configuration.getUserDefaultFieldValue(fieldWrapper.getFieldName().toLowerCase());
+        value = configuration.getDefaultValueByFieldName(fieldWrapper.getFieldName().toLowerCase());
         //使用configMap，根据Type获取默认值
         if (value == null) {
             value = configuration.getDefaultValue(fieldWrapper.getField().getType().getName());
@@ -96,7 +96,7 @@ public class ValueEngine<T> {
      * 基本数据类型的默认值赋值
      */
     private void setDefaultValuePrimitive(FieldWrapper fieldWrapper) throws InvocationTargetException, IllegalAccessException {
-        fieldWrapper.getSetterMethod().invoke(object, configuration.getUserDefaultFieldValue(fieldWrapper.getFieldName()));
+        fieldWrapper.getSetterMethod().invoke(object, configuration.getDefaultValueByFieldName(fieldWrapper.getFieldName()));
     }
 
     public ValueEngine(T object, Configuration configuration) {

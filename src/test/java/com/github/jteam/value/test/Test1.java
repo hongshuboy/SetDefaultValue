@@ -80,7 +80,7 @@ public class Test1 {
     /**
      * 根据字段，设置特定的值
      * 字段名同样忽略大小写
-     * - [1.2新增]：支持对基础类型赋值
+     * - [1.2新增]：支持对基本数据类型(eg int)赋值
      */
     @Test
     public void test4() {
@@ -88,8 +88,10 @@ public class Test1 {
 
         final Configuration configuration = new HashConfiguration();
         //注意此处num的类型是基础类型int 这里同样支持
-        configuration.setUserDefaultFieldValueConfig("num", 100);
-        configuration.setUserDefaultFieldValueConfig("schOOlNamE", "Harvard University");
+        //但如果num的值不是int的默认值0, 这里就不会生效, 因为框架只会对默认值赋值, 不会覆盖已有的值(以免造成损失)
+        //这里如果先执行student.setNum(1) 下面一行会被跳过
+        configuration.setDefaultValueByFieldName("num", 100);
+        configuration.setDefaultValueByFieldName("schOOlNamE", "Harvard University");
 
         ValueUtils.setDefaultValue(student, configuration);
 
@@ -125,8 +127,8 @@ public class Test1 {
         final Student student = new Student();
 
         final Configuration configuration = new HashConfiguration();
-//        configuration.setDefaultConfig(Type.LIST, new LinkedList<>());
-        configuration.setDefaultConfig(Type.LIST, LinkedList.class);
+//        configuration.setDefaultConfig(Type.LIST, new LinkedList<>()); 这种设置方式你会发现结果是错误的
+        configuration.setDefaultConfig(Type.LIST, LinkedList.class); //对引用类型 这种方式才是正确的, 也是默认的
         ValueUtils.setDefaultValue(student, configuration);
 
         student.getFriends().add("tom");
@@ -139,13 +141,18 @@ public class Test1 {
 
     /**
      * [2.1新增]
-     * 增加对继承的支持, 使用和以前一样, 毫无影响
+     * 增加对继承的支持, 使用和以前一样, 毫无影响 支持所有功能
      * Senior extends Student
      */
     @Test
     public void test7() {
         final Senior senior = new Senior();
-        ValueUtils.setDefaultValue(senior);
+
+        final Configuration configuration = new HashConfiguration();
+        configuration.setDefaultValueByFieldName("num", 100);
+        configuration.setDefaultValueByFieldName("schOOlNamE", "Harvard University");
+
+        ValueUtils.setDefaultValue(senior, configuration);
         System.out.println(senior);
     }
 }

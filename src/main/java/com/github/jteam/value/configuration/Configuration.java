@@ -66,21 +66,21 @@ public interface Configuration {
      * @param value     为该属性设置的默认值
      * @return Configuration
      */
-    Configuration setUserDefaultFieldValueConfig(String fieldName, Object value);
+    Configuration setDefaultValueByFieldName(String fieldName, Object value);
 
     /**
-     * 用户为该属性设置的默认值
+     * 获得用户为该属性设置的默认值
      *
      * @param fieldName 属性名
      * @return 默认值
      */
-    Object getUserDefaultFieldValue(String fieldName);
+    Object getDefaultValueByFieldName(String fieldName);
 
     /**
-     * 用户是否单独配置了该属性
+     * 用户是否为该属性配置了默认值
      *
      * @param fieldName 需要为全类名的字符串形式，例如List.class.getName()
      * @return boolean
      */
-    boolean containsUserFieldValueConfig(String fieldName);
+    boolean containsFieldNameConfig(String fieldName);
 }

@@ -14,10 +14,19 @@ import java.util.stream.Collectors;
  * Date: 2020-08-05 12:37
  */
 public class HashConfiguration implements Configuration {
-    //key  ->  type        value  ->  object or class
+    /**
+     * Type Config Map
+     * key  ->  type        value  ->  object or class
+     */
     protected final Map<String, Object> configMap = new HashMap<>();
-    //key  ->  fileName    value  ->  object or class
+    /**
+     * FieldName Config Map
+     * key  ->  fileName    value  ->  object or class
+     */
     private final Map<String, Object> userConfigFieldMap = new HashMap<>();
+    /**
+     * ignore field name set
+     */
     private Set<String> ignoreSet = new HashSet<>();
 
     {
@@ -101,18 +110,18 @@ public class HashConfiguration implements Configuration {
     }
 
     @Override
-    public Configuration setUserDefaultFieldValueConfig(String fieldName, Object value) {
+    public Configuration setDefaultValueByFieldName(String fieldName, Object value) {
         userConfigFieldMap.put(fieldName.toLowerCase(), value);
         return this;
     }
 
     @Override
-    public Object getUserDefaultFieldValue(String fieldName) {
+    public Object getDefaultValueByFieldName(String fieldName) {
         return userConfigFieldMap.get(fieldName.toLowerCase());
     }
 
     @Override
-    public boolean containsUserFieldValueConfig(String fieldName) {
+    public boolean containsFieldNameConfig(String fieldName) {
         return userConfigFieldMap.containsKey(fieldName.toLowerCase());
     }
 }
