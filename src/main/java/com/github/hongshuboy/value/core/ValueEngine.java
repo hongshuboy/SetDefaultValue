@@ -34,8 +34,7 @@ public class ValueEngine<T> {
             if (configuration.containsIgnoreField(fieldWrapper.getFieldName())) continue;
             if (Objects.isNull(o)) {
                 setDefaultValueReference(fieldWrapper);
-            } else if (configuration.containsFieldNameConfig(fieldWrapper.getFieldName())
-                    && isPrimitiveAndDefaultValue(o, fieldWrapper)) {
+            } else if (isPrimitiveAndDefaultValue(o, fieldWrapper)) {
                 //基本数据类型
                 setDefaultValuePrimitive(fieldWrapper);
             }
@@ -69,7 +68,7 @@ public class ValueEngine<T> {
         final List<FieldWrapper> list = new LinkedList<>();
         final Field[] declaredFields = aClass.getDeclaredFields();
         for (Field field : declaredFields) {
-            list.add(new FieldWrapper(aClass, aClass == object.getClass(), field));
+            list.add(new FieldWrapper(aClass, aClass != object.getClass(), field));
         }
         return list;
     }
@@ -96,7 +95,15 @@ public class ValueEngine<T> {
      * 基本数据类型的默认值赋值
      */
     private void setDefaultValuePrimitive(FieldWrapper fieldWrapper) throws InvocationTargetException, IllegalAccessException {
-        fieldWrapper.getSetterMethod().invoke(object, configuration.getDefaultValueByFieldName(fieldWrapper.getFieldName()));
+        //按类型赋值
+        Object value;
+        if ((value = configuration.getDefaultValue(fieldWrapper.getField().getType().getName())) != null) {
+            fieldWrapper.getSetterMethod().invoke(object, value);
+        }
+        //按字段名赋值
+        if (configuration.containsFieldNameConfig(fieldWrapper.getFieldName())) {
+            fieldWrapper.getSetterMethod().invoke(object, configuration.getDefaultValueByFieldName(fieldWrapper.getFieldName()));
+        }
     }
 
     public ValueEngine(T object, Configuration configuration) {

@@ -44,7 +44,7 @@ public class HashConfiguration implements Configuration {
         configMap.clear();
         configMap.put(Type.BYTE.getType(), 0b00);
         configMap.put(Type.BOOLEAN.getType(), false);
-        configMap.put(Type.CHARACTER.getType(), ' ');
+        configMap.put(Type.CHARACTER.getType(), 0);
         configMap.put(Type.SHORT.getType(), 0);
         configMap.put(Type.INTEGER.getType(), 0);
         configMap.put(Type.FLOAT.getType(), 0f);

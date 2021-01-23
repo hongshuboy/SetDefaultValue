@@ -47,6 +47,7 @@ public class SimpleConfigTemplate {
      *
      * @param configMap configMap
      */
+    @Deprecated
     public static void collectionConfigSingleton(Map<String, Object> configMap) {
         configMap.put(Type.LIST.getType(), new ArrayList<>());
         configMap.put(Type.ARRAYLIST.getType(), new ArrayList<>());

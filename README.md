@@ -6,6 +6,15 @@
 | ---------------------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | ![Hex.pm](https://img.shields.io/hexpm/l/plug) | [![codebeat badge](https://codebeat.co/badges/319e72b9-fd7e-4697-88c7-ac17ee8b7e42)](https://codebeat.co/projects/github-com-hongshuboy-setdefaultvalue-master) | ![language java](<https://img.shields.io/badge/java-v1.8-blue>) | ![GitHub release (latest by date)](https://img.shields.io/github/v/release/hongshuboy/setdefaultvalue) | ![GitHub repo size](https://img.shields.io/github/repo-size/hongshuboy/setdefaultvalue) | ![GitHub contributors](https://img.shields.io/github/contributors/hongshuboy/setdefaultvalue) |
 
+- [x] 支持基本数据类型的默认值赋值
+- [x] 支持引用数据类型的默认值赋值
+- [x] 支持数组的默认值赋值
+- [x] 支持目标类继承形态下的默认值赋值
+- [x] 支持引用类型` prototype`模式的赋值
+- [x] 支持根据类型\字段名的自定义设置
+- [x] 支持多种不同形式的扩展
+- [x] …
+
 ### 适用场景
 
 > ***[本工具原理是通过反射调用Getter和Setter方法进行赋值，因此需要传入的对象有这类方法]***
@@ -134,7 +143,7 @@ public void test3() {
 }	
 ```
 
-此时的输出
+输出：
 
 ```java
 Student{id=null, age=1, name='hi', ids=[1, 2], schoolName='null', num=0, friends=[]}
@@ -156,8 +165,8 @@ public void test4() {
 
     final Configuration configuration = new HashConfiguration();
     //注意此处num的类型是基础类型int 这里同样支持
-    configuration.setUserDefaultFieldValueConfig("num", 100);
-    configuration.setUserDefaultFieldValueConfig("schOOlNamE", "Harvard University");
+    configuration.setDefaultValueByFieldName("num", 100);
+    configuration.setDefaultValueByFieldName("schOOlNamE", "Harvard University");
 
     ValueUtils.setDefaultValue(student, configuration);
 
@@ -165,13 +174,44 @@ public void test4() {
 }
 ```
 
-此时的输出
+输出：
 
 ```java
 Student{id=0, age=0, name='', ids=[], schoolName='Harvard University', num=100, friends=[]}
 ```
 
-**5.集合类型默认使用反射生成新对象**
+**5.支持基本数据类型的默认值赋值**
+
+你可能已经注意到，在`test4`中`num`的类型是`int`，是基本数据类型，它在`Java`语言中默认会是`0`而不是`Null`，这种情况下，依然可以对其设置默认值，但前提是它的值是默认值`0`，若此时`num`的值是`1`，那么就会跳过。
+
+`Java`的基本数据类型在此都支持默认值赋值，为了区分基本的数据类型和基本的引用类型，比如`int`和`Integer`，基本数据类型在`Type`中的命名都是以下划线结尾，比如：
+
+`int` => `Type.INT_`  
+
+`Integer` => `Type.INTEGER`
+
+```java
+@Test
+public void test5(){
+    final Student student = new Student();
+
+    final Configuration configuration = new HashConfiguration();
+    //将int类型默认值设置为1
+    configuration.setDefaultConfig(Type.INT_, 1);
+
+    ValueUtils.setDefaultValue(student, configuration);
+
+    System.out.println(student);
+}
+```
+
+输出：
+
+```
+Student{id=0, age=0, name='', ids=[], schoolName='', num=1, friends=[], family=[]}
+```
+
+**6.集合类型默认使用反射生成新对象**
 
 ```java
 /**
@@ -179,7 +219,7 @@ Student{id=0, age=0, name='', ids=[], schoolName='Harvard University', num=100, 
  * 集合类型默认使用反射生成新对象，避免后续操作时会互相影响
  */
 @Test
-public void test5() {
+public void test6() {
     //1.2新增测试字段List<String> family 和 friends类型一致
     final Student student = new Student();
 
@@ -195,14 +235,14 @@ public void test5() {
 }
 ```
 
-此时的输出
+输出：
 
 ```
 Student{id=0, age=0, name='', ids=[], schoolName='', num=0, friends=[], family=[]}
 Student{id=0, age=0, name='', ids=[], schoolName='', num=0, friends=[tom], family=[mike]}
 ```
 
-**6.支持用户自定义反射生成新对象**
+**7.支持用户自定义反射生成新对象**
 
 ```java
 /**
@@ -210,7 +250,7 @@ Student{id=0, age=0, name='', ids=[], schoolName='', num=0, friends=[tom], famil
  * 若用户自定义的值为Class，则会使用反射来生成，普通对象不做处理，直接使用
  */
 @Test
-public void test6() {
+public void test7() {
     final Student student = new Student();
 
     final Configuration configuration = new HashConfiguration();
@@ -227,7 +267,7 @@ public void test6() {
 }
 ```
 
-此时的输出
+输出：
 
 ```
 3351573
@@ -237,7 +277,7 @@ Student{id=0, age=0, name='', ids=[], schoolName='', num=0, friends=[tom], famil
 
 以上所有的代码均在`test/java/`下，可直接运行测试
 
-**7.如何自定义配置**
+**8.如何自定义配置**
 
 目前支持的自动赋值类型能够在`com.github.jteam.value.Type`下找到，这是一个枚举类型，目前支持9种基本的引用类型（如`Integer`、`String`等），9种数组类型和10种集合类型（如`List`、`Map`等）
 
