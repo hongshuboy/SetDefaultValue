@@ -1,9 +1,9 @@
-package com.github.jteam.value;
+package com.github.hongshuboy.value;
 
-import com.github.jteam.value.configuration.Configuration;
-import com.github.jteam.value.configuration.impl.SingleHashConfiguration;
-import com.github.jteam.value.core.ValueEngine;
-import com.github.jteam.value.core.Type;
+import com.github.hongshuboy.value.configuration.impl.SingleHashConfiguration;
+import com.github.hongshuboy.value.core.ValueEngine;
+import com.github.hongshuboy.value.configuration.Configuration;
+import com.github.hongshuboy.value.core.Type;
 
 import java.lang.reflect.InvocationTargetException;
 

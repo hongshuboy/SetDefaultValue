@@ -1,13 +1,13 @@
-package com.github.jteam.value.core;
+package com.github.hongshuboy.value.core;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 /**
- * 反射的目标类所有的属性包装
+ * Field鍖呰
  *
  * @author hongshuboy
- * Date: 2021/1/12 上午 10:41
+ * Date: 2021/1/12 涓婂崍 10:41
  */
 public class FieldWrapper {
     private Class<?> cls;

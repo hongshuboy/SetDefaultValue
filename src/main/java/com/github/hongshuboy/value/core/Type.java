@@ -1,7 +1,7 @@
-package com.github.jteam.value.core;
+package com.github.hongshuboy.value.core;
 
 /**
- * Java³£¼ûÀàĞÍµÄÃ¶¾ÙÀà
+ * æ”¯æŒçš„ç±»å‹æšä¸¾
  *
  * @author hongshuboy
  * 2020-08-03 13:53

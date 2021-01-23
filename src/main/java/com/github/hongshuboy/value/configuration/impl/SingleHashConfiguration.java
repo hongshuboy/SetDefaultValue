@@ -1,7 +1,7 @@
-package com.github.jteam.value.configuration.impl;
+package com.github.hongshuboy.value.configuration.impl;
 
-import com.github.jteam.value.configuration.Configuration;
-import com.github.jteam.value.core.Type;
+import com.github.hongshuboy.value.configuration.Configuration;
+import com.github.hongshuboy.value.core.Type;
 
 import java.util.concurrent.locks.ReentrantLock;
 

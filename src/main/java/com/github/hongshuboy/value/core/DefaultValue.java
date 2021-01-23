@@ -1,13 +1,15 @@
-package com.github.jteam.value.core;
+package com.github.hongshuboy.value.core;
 
 import java.lang.annotation.*;
 
 /**
- * Ê¹ÓÃ×¢½âÖ±½Ó¶ÔÊôĞÔÉèÖÃÄ¬ÈÏÖµ£¬ÓÅÏÈ¼¶×î¸ß[Ôİ²»Ö§³Ö]
+ * æ³¨è§£é…ç½®æ–¹æ³•, æš‚æ—¶ä¸æ”¯æŒ <br />
+ * No support at the moment
  *
  * @author hongshuboy
- * Date: date  2021/1/13 ÏÂÎç 4:46
+ * Date: date  2021/1/13 ä¸‹åˆ 4:46
  */
+@Deprecated
 @Documented
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)

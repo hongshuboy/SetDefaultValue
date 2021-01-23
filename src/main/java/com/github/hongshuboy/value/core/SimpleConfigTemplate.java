@@ -1,4 +1,4 @@
-package com.github.jteam.value.core;
+package com.github.hongshuboy.value.core;
 
 import java.util.*;
 

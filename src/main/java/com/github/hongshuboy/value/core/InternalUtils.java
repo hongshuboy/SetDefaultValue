@@ -1,12 +1,12 @@
-package com.github.jteam.value.core;
+package com.github.hongshuboy.value.core;
 
 import java.lang.reflect.Method;
 
 /**
- * ÄÚ²¿¹¤¾ßÀà
+ * å†…éƒ¨å·¥å…·ç±»
  *
  * @author hongshuboy
- * Date: 2021/1/12 ÉÏÎç 11:27
+ * Date: 2021/1/12 ä¸Šåˆ 11:27
  */
 public class InternalUtils {
     private static final String GET = "get";
@@ -21,7 +21,7 @@ public class InternalUtils {
     }
 
     /**
-     * ×ª»»Îª´óÍÕ·å
+     * ×ªï¿½ï¿½Îªï¿½ï¿½ï¿½Õ·ï¿½
      *
      * @param str exampleInput
      * @return ExampleInput

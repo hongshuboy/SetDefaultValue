@@ -1,6 +1,6 @@
-package com.github.jteam.value.configuration;
+package com.github.hongshuboy.value.configuration;
 
-import com.github.jteam.value.core.Type;
+import com.github.hongshuboy.value.core.Type;
 
 /**
  * Configuration
