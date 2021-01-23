@@ -292,6 +292,36 @@ public class TestConfiguration extends HashConfiguration {
 }
 ```
 
+另外一种简单的方式，假如只是少许内容需要定制，比如`LocalDateTime`在`Type`中没有提供，可以直接通过`configuration`实例进行设置
+
+可以通过`configuration`的`Type(Class)`或者`FieldName`进行设置，下面演示的是根据`Type(Class)`设置的方式
+
+```java
+public class Senior extends Student{
+    private LocalDateTime birthday;
+    getters and setters ... 
+}
+```
+
+```java
+@Test
+public void test8(){
+    Senior senior = new Senior();
+    final Configuration configuration = new HashConfiguration();
+
+    configuration.setDefaultConfig(LocalDateTime.class.getName(), LocalDateTime.now());
+    ValueUtils.setDefaultValue(senior, configuration);
+
+    System.out.println(senior);
+}
+```
+
+输出：
+
+```
+Senior{birthday=2021-01-23T18:00:51.762}Student{id=0, age=0, name='', ids=[], schoolName='', num=0, friends=[], family=[]}
+```
+
 再次提醒：**[本工具原理是通过反射调用Getter和Setter方法进行赋值，因此需要传入的对象有这类方法]**
 
 ### 作者
