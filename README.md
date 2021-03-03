@@ -2,7 +2,7 @@
 
 一款使用反射机制，能够自动为类的属性设置默认值的工具
 
-| License                                        | Code Beat                                                    | Language                                                     | Build                                                        | Size                                                         | Contributors                                                 |
+| License                                        | CodeBeat                                                    | Language                                                     | Build                                                        | Size                                                         | Contributors                                                 |
 | ---------------------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | ![Hex.pm](https://img.shields.io/hexpm/l/plug) | [![codebeat badge](https://codebeat.co/badges/319e72b9-fd7e-4697-88c7-ac17ee8b7e42)](https://codebeat.co/projects/github-com-hongshuboy-setdefaultvalue-master) | ![language java](<https://img.shields.io/badge/java-v1.8-blue>) | ![GitHub release (latest by date)](https://img.shields.io/github/v/release/hongshuboy/setdefaultvalue) | ![GitHub repo size](https://img.shields.io/github/repo-size/hongshuboy/setdefaultvalue) | ![GitHub contributors](https://img.shields.io/github/contributors/hongshuboy/setdefaultvalue) |
 
